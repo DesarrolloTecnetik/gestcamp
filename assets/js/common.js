@@ -64,7 +64,7 @@ async function saveList(key, list) {
   }
 }
 
-/* --- Colapsar / expandir sidebar --- */
+/* --- Colapsar / expandir sidebar (escritorio) --- */
 function toggleSidebar() {
   document.body.classList.toggle('sidebar-collapsed');
   const collapsed = document.body.classList.contains('sidebar-collapsed');
@@ -73,6 +73,20 @@ function toggleSidebar() {
   const btn = document.getElementById('sidebar-toggle-btn');
   if (btn) btn.title = collapsed ? 'Expandir menú' : 'Colapsar menú';
 }
+
+/* --- Menú móvil (drawer) --- */
+function toggleMobileSidebar() {
+  document.body.classList.toggle('mobile-sidebar-open');
+}
+function closeMobileSidebar() {
+  document.body.classList.remove('mobile-sidebar-open');
+}
+
+/* Si el usuario rota o agranda la ventana a escritorio, cierra el drawer
+   para que no quede "atorado" abierto al volver a mobile */
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 960) closeMobileSidebar();
+});
 
 /* Reloj/fecha del topbar + estado del sidebar, presentes en todas las vistas */
 document.addEventListener('DOMContentLoaded', () => {
