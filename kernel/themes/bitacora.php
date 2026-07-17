@@ -35,30 +35,35 @@
     </select>
 </div>
 
-<!-- 2. FORMULARIO -->
-<div class="form-panel" id="form-bitacora">
-    <h3 id="form-bitacora-title">Nueva acción</h3>
-    <input type="hidden" id="b-id">
-    <div class="form-grid">
-        <div class="field"><label>Fecha</label><input type="date" id="b-fecha"></div>
-        <div class="field full"><label>Actividad</label><input type="text" id="b-actividad" placeholder="Ej. Reunión"></div>
-        <div class="field"><label>Responsable</label><input type="text" id="b-responsable" placeholder="Nombre"></div>
-        <div class="field"><label>Prioridad</label>
-            <select id="b-prioridad"><option value="BAJA">Baja</option><option value="MEDIA">Media</option><option value="ALTA" selected>Alta</option></select>
+<!-- 2. FORMULARIO (MODAL) -->
+<div class="form-panel form-modal" id="form-bitacora">
+    <div class="form-modal-box">
+        <button type="button" class="form-modal-close" id="b-cerrar" aria-label="Cerrar">
+            <svg viewBox="0 0 24 24" width="16" stroke="currentColor" fill="none" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+        <h3 id="form-bitacora-title">Nueva acción</h3>
+        <input type="hidden" id="b-id">
+        <div class="form-grid">
+            <div class="field"><label>Fecha</label><input type="date" id="b-fecha"></div>
+            <div class="field full"><label>Actividad</label><input type="text" id="b-actividad" placeholder="Ej. Reunión"></div>
+            <div class="field"><label>Responsable</label><input type="text" id="b-responsable" placeholder="Nombre"></div>
+            <div class="field"><label>Prioridad</label>
+                <select id="b-prioridad"><option value="BAJA">Baja</option><option value="MEDIA">Media</option><option value="ALTA" selected>Alta</option></select>
+            </div>
+            <div class="field"><label>Fecha de inicio</label><input type="date" id="b-fecha-inicio"></div>
+            <div class="field full"><label>Acuerdos</label><textarea id="b-acuerdos" placeholder="Acuerdos"></textarea></div>
+            <div class="field"><label>Status</label>
+                <select id="b-status"><option value="Pendiente">Pendiente</option><option value="Proceso">Proceso</option><option value="Terminada">Terminada</option></select>
+            </div>
+            <div class="field"><label>Avance (%)</label><input type="number" id="b-avance" min="0" max="100" value="0"></div>
+            <div class="field"><label>Fecha de seguimiento</label><input type="date" id="b-seg-fecha"></div>
+            <div class="field full"><label>Descripción de seguimiento</label><textarea id="b-seg-desc" placeholder="Seguimiento"></textarea></div>
+            <div class="field full"><label>Próxima acción</label><input type="text" id="b-proxima" placeholder="Siguiente paso"></div>
         </div>
-        <div class="field"><label>Fecha de inicio</label><input type="date" id="b-fecha-inicio"></div>
-        <div class="field full"><label>Acuerdos</label><textarea id="b-acuerdos" placeholder="Acuerdos"></textarea></div>
-        <div class="field"><label>Status</label>
-            <select id="b-status"><option value="Pendiente">Pendiente</option><option value="Proceso">Proceso</option><option value="Terminada">Terminada</option></select>
+        <div class="form-actions">
+            <button class="btn btn-purple" id="b-guardar">Guardar acción</button>
+            <button class="btn" id="b-cancelar">Cancelar</button>
         </div>
-        <div class="field"><label>Avance (%)</label><input type="number" id="b-avance" min="0" max="100" value="0"></div>
-        <div class="field"><label>Fecha de seguimiento</label><input type="date" id="b-seg-fecha"></div>
-        <div class="field full"><label>Descripción de seguimiento</label><textarea id="b-seg-desc" placeholder="Seguimiento"></textarea></div>
-        <div class="field full"><label>Próxima acción</label><input type="text" id="b-proxima" placeholder="Siguiente paso"></div>
-    </div>
-    <div class="form-actions">
-        <button class="btn btn-purple" id="b-guardar">Guardar acción</button>
-        <button class="btn" id="b-cancelar">Cancelar</button>
     </div>
 </div>
 
@@ -83,8 +88,12 @@ let currentPage = 1;
 const itemsPerPage = 10;
 const bForm = document.getElementById('form-bitacora');
 
-function openBForm(){ clearBForm(); document.getElementById('form-bitacora-title').textContent='Nueva acción'; bForm.classList.add('open'); bForm.scrollIntoView({behavior:'smooth'}); }
-document.getElementById('b-cancelar').addEventListener('click', ()=> bForm.classList.remove('open'));
+function openBForm(){ clearBForm(); document.getElementById('form-bitacora-title').textContent='Nueva acción'; bForm.classList.add('open'); }
+function closeBForm(){ bForm.classList.remove('open'); }
+document.getElementById('b-cancelar').addEventListener('click', closeBForm);
+document.getElementById('b-cerrar').addEventListener('click', closeBForm);
+bForm.addEventListener('click', (ev)=>{ if(ev.target === bForm) closeBForm(); });
+document.addEventListener('keydown', (ev)=>{ if(ev.key === 'Escape' && bForm.classList.contains('open')) closeBForm(); });
 
 function clearBForm(){
     ['b-id','b-fecha','b-actividad','b-responsable','b-fecha-inicio','b-acuerdos','b-avance','b-seg-fecha','b-seg-desc','b-proxima'].forEach(id=>document.getElementById(id).value='');
@@ -105,7 +114,7 @@ document.getElementById('b-guardar').addEventListener('click', async ()=>{
     const idx = bitacora.findIndex(x=>x.id===id);
     if(idx>-1) bitacora[idx]=entry; else bitacora.push(entry);
     await saveList('bitacora:entries', bitacora);
-    bForm.classList.remove('open'); renderBitacora();
+    closeBForm(); renderBitacora();
 });
 
 function editBitacora(id){
@@ -117,7 +126,7 @@ function editBitacora(id){
     document.getElementById('b-avance').value=e.avance||0; document.getElementById('b-seg-fecha').value=e.segFecha||'';
     document.getElementById('b-seg-desc').value=e.segDesc||''; document.getElementById('b-proxima').value=e.proxima||'';
     document.getElementById('form-bitacora-title').textContent='Editar acción';
-    bForm.classList.add('open'); bForm.scrollIntoView({behavior:'smooth'});
+    bForm.classList.add('open');
 }
 
 async function deleteBitacora(id){

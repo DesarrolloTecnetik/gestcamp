@@ -31,32 +31,37 @@
     </select>
 </div>
 
-<!-- 2. FORMULARIO -->
-<div class="form-panel" id="form-evento">
-    <h3 id="form-evento-title">Nuevo evento</h3>
-    <input type="hidden" id="e-id">
-    <div class="form-grid">
-        <div class="field"><label>Tipo</label>
-            <select id="e-tipo"><option>Mitin</option><option>Reunión</option><option>Entrega de beneficios</option><option>Encuesta</option></select>
-        </div>
-        <div class="field"><label>Fecha</label><input type="date" id="e-fecha"></div>
-        <div class="field">
-            <label>Zona / colonia</label>
-            <div class="zona-ac-wrap" id="zona-ac-wrap">
-                <input type="text" id="e-lugar" placeholder="Ej. Centro" autocomplete="off">
-                <ul class="zona-ac-list" id="zona-ac-list"></ul>
+<!-- 2. FORMULARIO (MODAL) -->
+<div class="form-panel form-modal" id="form-evento">
+    <div class="form-modal-box">
+        <button type="button" class="form-modal-close" id="e-cerrar" aria-label="Cerrar">
+            <svg viewBox="0 0 24 24" width="16" stroke="currentColor" fill="none" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+        <h3 id="form-evento-title">Nuevo evento</h3>
+        <input type="hidden" id="e-id">
+        <div class="form-grid">
+            <div class="field"><label>Tipo</label>
+                <select id="e-tipo"><option>Mitin</option><option>Reunión</option><option>Entrega de beneficios</option><option>Encuesta</option></select>
             </div>
+            <div class="field"><label>Fecha</label><input type="date" id="e-fecha"></div>
+            <div class="field">
+                <label>Zona / colonia</label>
+                <div class="zona-ac-wrap" id="zona-ac-wrap">
+                    <input type="text" id="e-lugar" placeholder="Ej. Centro" autocomplete="off">
+                    <ul class="zona-ac-list" id="zona-ac-list"></ul>
+                </div>
+            </div>
+            <div class="field"><label>Responsable</label><input type="text" id="e-responsable"></div>
+            <div class="field"><label>Participantes estimados</label><input type="number" id="e-participantes" min="0" value="0"></div>
+            <div class="field"><label>Estatus</label>
+                <select id="e-estatus"><option>Programado</option><option>Realizado</option><option>Cancelado</option></select>
+            </div>
+            <div class="field full"><label>Descripción</label><textarea id="e-descripcion" placeholder="Detalles del evento"></textarea></div>
         </div>
-        <div class="field"><label>Responsable</label><input type="text" id="e-responsable"></div>
-        <div class="field"><label>Participantes estimados</label><input type="number" id="e-participantes" min="0" value="0"></div>
-        <div class="field"><label>Estatus</label>
-            <select id="e-estatus"><option>Programado</option><option>Realizado</option><option>Cancelado</option></select>
+        <div class="form-actions">
+            <button class="btn btn-purple" id="e-guardar">Guardar evento</button>
+            <button class="btn" id="e-cancelar">Cancelar</button>
         </div>
-        <div class="field full"><label>Descripción</label><textarea id="e-descripcion" placeholder="Detalles del evento"></textarea></div>
-    </div>
-    <div class="form-actions">
-        <button class="btn btn-purple" id="e-guardar">Guardar evento</button>
-        <button class="btn" id="e-cancelar">Cancelar</button>
     </div>
 </div>
 
@@ -80,8 +85,12 @@ let currentPage = 1;
 const itemsPerPage = 10;
 const eForm = document.getElementById('form-evento');
 
-function openEForm(){ clearEForm(); document.getElementById('form-evento-title').textContent='Nuevo evento'; eForm.classList.add('open'); eForm.scrollIntoView({behavior:'smooth'}); }
-document.getElementById('e-cancelar').addEventListener('click', ()=> eForm.classList.remove('open'));
+function openEForm(){ clearEForm(); document.getElementById('form-evento-title').textContent='Nuevo evento'; eForm.classList.add('open'); }
+function closeEForm(){ eForm.classList.remove('open'); }
+document.getElementById('e-cancelar').addEventListener('click', closeEForm);
+document.getElementById('e-cerrar').addEventListener('click', closeEForm);
+eForm.addEventListener('click', (ev)=>{ if(ev.target === eForm) closeEForm(); });
+document.addEventListener('keydown', (ev)=>{ if(ev.key === 'Escape' && eForm.classList.contains('open')) closeEForm(); });
 
 function clearEForm(){
     ['e-id','e-fecha','e-lugar','e-responsable','e-descripcion'].forEach(id=>document.getElementById(id).value='');
@@ -99,7 +108,7 @@ document.getElementById('e-guardar').addEventListener('click', async ()=>{
     const idx = eventos.findIndex(x=>x.id===id);
     if(idx>-1) eventos[idx]=entry; else eventos.push(entry);
     await saveList('eventos:entries', eventos);
-    eForm.classList.remove('open'); renderEventos();
+    closeEForm(); renderEventos();
 });
 
 function editEvento(id){
@@ -109,7 +118,7 @@ function editEvento(id){
     document.getElementById('e-participantes').value=e.participantes||0; document.getElementById('e-estatus').value=e.estatus;
     document.getElementById('e-descripcion').value=e.descripcion||'';
     document.getElementById('form-evento-title').textContent='Editar evento';
-    eForm.classList.add('open'); eForm.scrollIntoView({behavior:'smooth'});
+    eForm.classList.add('open');
 }
 
 async function deleteEvento(id){
