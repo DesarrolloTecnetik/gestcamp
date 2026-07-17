@@ -7,6 +7,7 @@
 		<title><?php echo $viewTitle.' · '.TITLE; ?></title>
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+		<link rel="icon" type="image/png" href="<?php echo URL; ?>/assets/images/favicon.ico">
 		<link rel="stylesheet" href="<?php echo URL; ?>/assets/css/app.css">
 	</head>
 

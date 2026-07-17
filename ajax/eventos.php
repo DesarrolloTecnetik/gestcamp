@@ -49,7 +49,8 @@
 
 		$db->query("DELETE FROM campaign_eventos");
 		$db->execute();
-		$db->CloseConnection();
+		// OJO: no cerramos la conexión aquí — la transacción sigue abierta
+		// y necesitamos la MISMA conexión para el resto de las operaciones.
 
 		foreach( $list as $e ) {
 
@@ -58,7 +59,7 @@
 			$db->query("INSERT INTO campaign_eventos
 				(uid, tipo, fecha, lugar, responsable, participantes, estatus, descripcion, userid, created_at, updated_at)
 				VALUES
-				(:uid, :tipo, :fecha, :lugar, :responsable, :participantes, :estatus, :descripcion, :userid, :now, :now)");
+				(:uid, :tipo, :fecha, :lugar, :responsable, :participantes, :estatus, :descripcion, :userid, :created_at, :updated_at)");
 
 			$db->bind(':uid', $uidv);
 			$db->bind(':tipo', isset($e['tipo']) ? $e['tipo'] : 'Mitin');
@@ -69,13 +70,15 @@
 			$db->bind(':estatus', isset($e['estatus']) ? $e['estatus'] : 'Programado');
 			$db->bind(':descripcion', isset($e['descripcion']) ? $e['descripcion'] : '');
 			$db->bind(':userid', $UserID ? $UserID : 0);
-			$db->bind(':now', $datetime);
+			$db->bind(':created_at', $datetime);
+			$db->bind(':updated_at', $datetime);
 			$db->execute();
-			$db->CloseConnection();
+			// tampoco aquí — seguimos dentro de la misma transacción
 
 		}
 
 		$db->commitTransaction();
+		$db->CloseConnection();
 
 		echo json_encode(array('ok' => true));
 		exit;

@@ -119,9 +119,11 @@ function renderDashboard(){
       <span class="t3">${fmtDate(e.fecha)}</span></div>`).join('') : '<div class="empty-state" style="padding:16px;">No hay eventos programados.</div>';
 }
 
-(async function initDashboard(){
+/* Espera a que common.js (cargado al final del body) ya esté disponible
+   antes de intentar usar loadList/esc/fmtDate */
+document.addEventListener('DOMContentLoaded', async () => {
   bitacora = await loadList('bitacora:entries');
   eventos = await loadList('eventos:entries');
   renderDashboard();
-})();
+});
 </script>

@@ -3,8 +3,7 @@
 
   <aside class="sidebar">
     <div class="brand">
-      <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/><circle cx="12" cy="8" r="4"/></svg></div>
-      <div class="brand-text"><b>Plataforma de Campaña</b><span>gestión · 2026</span></div>
+      <img src="<?php echo URL; ?>/assets/images/logo.png" alt="Logotipo" class="brand-logo">
     </div>
 
     <div class="nav-group">

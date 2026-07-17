@@ -53,7 +53,8 @@
 
 		$db->query("DELETE FROM campaign_bitacora");
 		$db->execute();
-		$db->CloseConnection();
+		// OJO: no cerramos la conexión aquí — la transacción sigue abierta
+		// y necesitamos la MISMA conexión para el resto de las operaciones.
 
 		foreach( $list as $e ) {
 
@@ -80,11 +81,12 @@
 			$db->bind(':created_at', $datetime);
 			$db->bind(':updated_at', $datetime);
 			$db->execute();
-			$db->CloseConnection();
+			// tampoco aquí — seguimos dentro de la misma transacción
 
 		}
 
 		$db->commitTransaction();
+		$db->CloseConnection();
 
 		echo json_encode(array('ok' => true));
 		exit;
