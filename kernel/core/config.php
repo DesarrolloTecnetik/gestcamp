@@ -19,11 +19,11 @@
 		// host name (localhost)
 		define("DB_HOST", "localhost");			
 		// user phpmyadmin	
-		define("DB_USER", "gestcamp_Tecnetik");			
+		define("DB_USER", "root");			
 		// pass phpmyadmin	
-		define("DB_PASS",	"Tecnetik25$");						
+		define("DB_PASS",	"");						
 		// database name 
-		define("DB_NAME", "gestcamp_gestcamp");			
+		define("DB_NAME", "gestcamp");			
 		// format of codification of characters UNICODE and ISO
 		define('DB_CHARSET', "SET NAME utf8");		
 		// type database in phpmyadmin

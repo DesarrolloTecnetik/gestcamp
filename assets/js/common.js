@@ -64,12 +64,28 @@ async function saveList(key, list) {
   }
 }
 
-/* Reloj/fecha del topbar, presente en todas las vistas */
+/* --- Colapsar / expandir sidebar --- */
+function toggleSidebar() {
+  document.body.classList.toggle('sidebar-collapsed');
+  const collapsed = document.body.classList.contains('sidebar-collapsed');
+  localStorage.setItem('sidebarCollapsed', collapsed ? '1' : '0');
+
+  const btn = document.getElementById('sidebar-toggle-btn');
+  if (btn) btn.title = collapsed ? 'Expandir menú' : 'Colapsar menú';
+}
+
+/* Reloj/fecha del topbar + estado del sidebar, presentes en todas las vistas */
 document.addEventListener('DOMContentLoaded', () => {
   const sub = document.getElementById('topbar-sub');
   if (sub) {
     const now = new Date();
     sub.textContent = now.toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
       + ' · ' + now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  if (localStorage.getItem('sidebarCollapsed') === '1') {
+    document.body.classList.add('sidebar-collapsed');
+    const btn = document.getElementById('sidebar-toggle-btn');
+    if (btn) btn.title = 'Expandir menú';
   }
 });

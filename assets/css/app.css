@@ -287,3 +287,42 @@
     .capture-grid{grid-template-columns:1fr;}
     .topbar{padding:14px 18px;}
   }
+
+  /* --- Sidebar colapsado --- */
+.sidebar{ transition: width .2s ease; }
+
+body.sidebar-collapsed .sidebar{
+  width:72px;
+  padding:20px 10px;
+}
+body.sidebar-collapsed .brand{
+  justify-content:center;
+  padding:4px 0 20px;
+}
+body.sidebar-collapsed .brand-logo{
+  display:none; /* el logo trae el texto "GestCamp", no cabe colapsado */
+}
+body.sidebar-collapsed .nav-group-label{
+  display:none;
+}
+body.sidebar-collapsed .nav-btn{
+  justify-content:center;
+  padding:9px;
+}
+body.sidebar-collapsed .nav-btn-label{
+  display:none;
+}
+body.sidebar-collapsed .sidebar-foot{
+  justify-content:center;
+  padding:14px 0 0;
+}
+body.sidebar-collapsed .sidebar-foot-text,
+body.sidebar-collapsed .sidebar-foot .icon-square{
+  display:none;
+}
+
+/* Rotar la flecha para indicar que ahora expande */
+.back-btn svg{ transition: transform .2s ease; }
+body.sidebar-collapsed .back-btn svg{
+  transform: rotate(180deg);
+}
