@@ -109,6 +109,20 @@ function renderBitacora(){
     </tr>`).join('');
 }
 
+async function loadList(key){
+  try{
+    const res = await fetch('ajax/bitacora.php?op=list');
+    const json = await res.json();
+    if(json && json.ok && Array.isArray(json.data)){
+      return json.data;
+    }
+    return [];
+  }catch(err){
+    console.error('Error cargando bitácora:', err);
+    return [];
+  }
+}
+
 (async function initBitacora(){
   bitacora = await loadList('bitacora:entries');
   renderBitacora();

@@ -62,7 +62,7 @@
 			$db->query("INSERT INTO campaign_bitacora
 				(uid, fecha, actividad, responsable, prioridad, fecha_inicio, acuerdos, status, avance, seg_fecha, seg_desc, proxima, userid, created_at, updated_at)
 				VALUES
-				(:uid, :fecha, :actividad, :responsable, :prioridad, :fechaInicio, :acuerdos, :status, :avance, :segFecha, :segDesc, :proxima, :userid, :now, :now)");
+				(:uid, :fecha, :actividad, :responsable, :prioridad, :fechaInicio, :acuerdos, :status, :avance, :segFecha, :segDesc, :proxima, :userid, :created_at, :updated_at)");
 
 			$db->bind(':uid', $uidv);
 			$db->bind(':fecha', !empty($e['fecha']) ? $e['fecha'] : null);
@@ -77,7 +77,8 @@
 			$db->bind(':segDesc', isset($e['segDesc']) ? $e['segDesc'] : '');
 			$db->bind(':proxima', isset($e['proxima']) ? $e['proxima'] : '');
 			$db->bind(':userid', $UserID ? $UserID : 0);
-			$db->bind(':now', $datetime);
+			$db->bind(':created_at', $datetime);
+			$db->bind(':updated_at', $datetime);
 			$db->execute();
 			$db->CloseConnection();
 
