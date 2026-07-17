@@ -2,38 +2,50 @@ Options -MultiViews
 Options -Indexes
 Options +FollowSymlinks
 RewriteEngine On 
+RewriteBase /
 
 <IfModule mod_rewrite.c>
 
-	#RewriteCond %{HTTPS} off 
-	#RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
+	# Evitar que los archivos y directorios reales sean afectados
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d
 
+	# --- DEFINICIÓN MANUAL DE RUTAS ---
+	
+	# Panel Principal
+	RewriteRule ^inicio$ index.php [L]
+	
+	# Dashboard
+	RewriteRule ^inicio/dashboard$ index.php [L]
+	
+	# Bitácora (Ajustado para coincidir con /inicio/bitacora)
+	RewriteRule ^inicio/bitacora$ index.php?action=bitacora [L]
+	
+	# Eventos
+	RewriteRule ^inicio/eventos$ index.php?action=eventos [L]
+	
+	# Mapa de Calor
+	RewriteRule ^inicio/mapa$ index.php?action=mapa [L]
+	
+	# Enrolamiento BRM
+	RewriteRule ^inicio/brm$ index.php?action=brm [L]
+	
+	# Análisis
+	RewriteRule ^inicio/estadisticas$ index.php?action=estadisticas [L]
+	RewriteRule ^inicio/candidatura$ index.php?action=candidatura [L]
+
+	# --- FIN DE DEFINICIÓN MANUAL ---
+
+	# Manejo de errores
+	RewriteRule ^oops$ nofound.php [L]
+
 </IfModule>
 
-# BEGIN USER REWRITES SB
-
-RewriteRule ^inicio/(.*)$ index.php?action=$1 [L]
-RewriteRule ^inicio index.php
-
-RewriteRule ^oops/(.*)$ nofound.php?action=$1 [L]
-RewriteRule ^oops nofound.php
-
-# END USER REWRITES SB
-
 # BEGIN HARDENING
-
-	# Nunca servir archivos .sql, .git, .env, .log ni backups
 	<FilesMatch "(\.sql|\.env|\.log|\.bak|\.gitignore)$">
 		Require all denied
 	</FilesMatch>
 
-	# Bloquear acceso directo al repositorio git si llega a subirse al hosting
 	RedirectMatch 404 ^/\.git
-
-	# Sin listados de directorio en ninguna carpeta (ajax, sql, assets, kernel)
 	Options -Indexes
-
 # END HARDENING

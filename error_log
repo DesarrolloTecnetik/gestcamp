@@ -1,0 +1,5 @@
+[16-Jul-2026 22:29:16 America/Mexico_City] PHP Warning:  Undefined array key "HTTP_USER_AGENT" in /home/gestcamp/public_html/kernel/core/functions.php on line 451
+[16-Jul-2026 22:30:13 America/Mexico_City] PHP Warning:  Undefined array key "HTTP_USER_AGENT" in /home/gestcamp/public_html/kernel/core/functions.php on line 451
+[16-Jul-2026 22:32:39 America/Mexico_City] PHP Warning:  Undefined array key "HTTP_USER_AGENT" in /home/gestcamp/public_html/kernel/core/functions.php on line 451
+[17-Jul-2026 10:30:51 America/Mexico_City] PHP Warning:  Undefined array key "HTTP_USER_AGENT" in /home/gestcamp/public_html/kernel/core/functions.php on line 451
+[17-Jul-2026 10:30:54 America/Mexico_City] PHP Warning:  Undefined array key "HTTP_USER_AGENT" in /home/gestcamp/public_html/kernel/core/functions.php on line 451
