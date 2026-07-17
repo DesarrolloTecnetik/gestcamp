@@ -20,3 +20,20 @@ RewriteRule ^inicio index.php
 
 RewriteRule ^oops/(.*)$ nofound.php?action=$1 [L]
 RewriteRule ^oops nofound.php
+
+# END USER REWRITES SB
+
+# BEGIN HARDENING
+
+	# Nunca servir archivos .sql, .git, .env, .log ni backups
+	<FilesMatch "(\.sql|\.env|\.log|\.bak|\.gitignore)$">
+		Require all denied
+	</FilesMatch>
+
+	# Bloquear acceso directo al repositorio git si llega a subirse al hosting
+	RedirectMatch 404 ^/\.git
+
+	# Sin listados de directorio en ninguna carpeta (ajax, sql, assets, kernel)
+	Options -Indexes
+
+# END HARDENING
