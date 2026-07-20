@@ -112,8 +112,11 @@ document.getElementById('b-guardar').addEventListener('click', async ()=>{
     };
     if(!entry.actividad){ document.getElementById('b-actividad').focus(); return; }
     const idx = bitacora.findIndex(x=>x.id===id);
+    const backup = bitacora.slice();
     if(idx>-1) bitacora[idx]=entry; else bitacora.push(entry);
-    await saveList('bitacora:entries', bitacora);
+    const ok = await saveList('bitacora:entries', bitacora);
+    if(!ok){ bitacora = backup; renderBitacora(); return; }
+    bitacora = await loadList('bitacora:entries');
     closeBForm(); renderBitacora();
 });
 
@@ -131,7 +134,12 @@ function editBitacora(id){
 
 async function deleteBitacora(id){
     if(!confirm('¿Eliminar esta acción?')) return;
-    bitacora = bitacora.filter(x=>x.id!==id); await saveList('bitacora:entries', bitacora); renderBitacora();
+    const backup = bitacora.slice();
+    bitacora = bitacora.filter(x=>x.id!==id);
+    const ok = await saveList('bitacora:entries', bitacora);
+    if(!ok){ bitacora = backup; renderBitacora(); return; }
+    bitacora = await loadList('bitacora:entries');
+    renderBitacora();
 }
 
 function applyFilters() { currentPage = 1; renderBitacora(); }

@@ -72,6 +72,7 @@
 			echo json_encode(array('ok' => true));
 		} catch (Exception $e) {
 			$db->rollBack();
+			error_log('bitacora sync error: ' . $e->getMessage());
 			echo json_encode(array('ok' => false, 'error' => $e->getMessage()));
 		}
 		$db->CloseConnection();
