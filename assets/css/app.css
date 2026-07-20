@@ -24,7 +24,7 @@
     height:100%;
     max-height:100%;
     margin:0;
-    overflow:hidden !important; /* Evita que la p¨¢gina completa haga scroll */
+    overflow:hidden !important; /* Evita que la pï¿½ï¿½gina completa haga scroll */
     background:var(--bg);
     color:var(--ink);
     font-family:'Inter',sans-serif;
@@ -184,7 +184,7 @@
   .field input:focus,.field select:focus,.field textarea:focus{outline:2px solid var(--purple);outline-offset:1px;border-color:var(--purple);}
   .form-actions{display:flex;gap:8px;margin-top:16px;}
 
-  /* Formularios en modal (Nuevo evento / Nueva acci¨®n): el .form-panel pasa
+  /* Formularios en modal (Nuevo evento / Nueva acciï¿½ï¿½n): el .form-panel pasa
      de ser un bloque embebido en el flujo a una capa fija que flota sobre
      el contenido, con backdrop, en vez de empujar la tabla hacia abajo. */
   .form-panel.form-modal{
@@ -209,6 +209,46 @@
   .form-modal-box{position:relative;}
   @keyframes fadeBg{from{opacity:0;}to{opacity:1;}}
   @keyframes popIn{from{opacity:0;transform:translateY(10px) scale(.98);}to{opacity:1;transform:none;}}
+
+  /* Modal de confirmaciÃ³n reutilizable (confirmDialog en common.js) */
+  .confirm-dialog-overlay{
+    display:none;position:fixed;inset:0;z-index:1100;
+    background:rgba(20,24,32,.5);
+    align-items:center;justify-content:center;padding:24px;
+    animation:fadeBg .15s ease;
+  }
+  .confirm-dialog-overlay.open{display:flex;}
+  .confirm-dialog-box{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:0 20px 50px rgba(15,20,30,.25);
+    padding:22px 24px;width:100%;max-width:380px;
+    animation:popIn .18s ease;
+  }
+  .confirm-dialog-box h3{margin:0 0 8px;font-size:16px;}
+  .confirm-dialog-box p{margin:0 0 18px;font-size:13.5px;color:var(--ink-soft);}
+  .confirm-dialog-actions{display:flex;justify-content:flex-end;gap:10px;}
+  .btn-danger-solid{background:var(--red);color:#fff;border-color:transparent;}
+  .btn-danger-solid:hover{background:#D93636;}
+
+  /* Notificaciones toast (esquina inferior derecha) */
+  .toast-host{
+    position:fixed;right:20px;bottom:20px;z-index:1200;
+    display:flex;flex-direction:column;gap:10px;align-items:flex-end;
+  }
+  .toast{
+    display:flex;align-items:center;gap:10px;
+    background:var(--surface);border:1px solid var(--line);border-radius:10px;
+    box-shadow:0 10px 30px rgba(15,20,30,.18);
+    padding:12px 16px;font-size:13.5px;font-weight:600;color:var(--ink);
+    max-width:320px;cursor:pointer;
+    opacity:0;transform:translateY(8px);transition:opacity .2s ease,transform .2s ease;
+  }
+  .toast.show{opacity:1;transform:translateY(0);}
+  .toast-success{border-left:4px solid #1EAE6D;}
+  .toast-success .toast-icon{color:#1EAE6D;}
+  .toast-error{border-left:4px solid var(--red);}
+  .toast-error .toast-icon{color:var(--red);}
+  .toast-icon{display:flex;flex-shrink:0;}
 
   .empty-state{padding:44px 20px;text-align:center;color:var(--ink-faint);}
   .empty-state .glyph{font-size:13px;font-weight:600;color:var(--ink-soft);margin-bottom:3px;}
@@ -305,7 +345,7 @@
     transform: rotate(180deg);
   }
 
-  /* --- Drawer m¨®vil: oculto por defecto, solo aplica en mobile --- */
+  /* --- Drawer mï¿½ï¿½vil: oculto por defecto, solo aplica en mobile --- */
   .sidebar-backdrop{
     display:none;position:fixed;inset:0;background:rgba(15,20,30,.45);
     z-index:150;opacity:0;pointer-events:none;transition:opacity .2s ease;
@@ -345,9 +385,9 @@
 
     .topbar{ padding:12px 16px; flex-wrap:wrap; row-gap:10px; }
     .topbar h2{ font-size:16px; }
-    .topbar .sub{ display:none; } /* en m¨®vil no mostramos la fecha */
+    .topbar .sub{ display:none; } /* en mï¿½ï¿½vil no mostramos la fecha */
     .topbar-right{ margin-left:auto; }
-    .pill-btn span{ display:none; } /* deja solo el ¨ªcono para ahorrar espacio */
+    .pill-btn span{ display:none; } /* deja solo el ï¿½ï¿½cono para ahorrar espacio */
     .pill-btn{ padding:9px 12px; }
 
     .kpi-grid{ grid-template-columns:1fr 1fr; }

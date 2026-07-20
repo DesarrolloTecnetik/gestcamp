@@ -5,6 +5,7 @@
 	header('Content-Type: application/json; charset=utf-8');
 
 	$op = !empty($_GET['op']) ? $_GET['op'] : (!empty($_POST['op']) ? $_POST['op'] : 'list');
+	$datetime = date('Y-m-d H:i:s');
 
 	#
 	# LISTAR TODAS LAS ACCIONES DE BITÁCORA

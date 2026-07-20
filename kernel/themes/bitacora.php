@@ -115,9 +115,10 @@ document.getElementById('b-guardar').addEventListener('click', async ()=>{
     const backup = bitacora.slice();
     if(idx>-1) bitacora[idx]=entry; else bitacora.push(entry);
     const ok = await saveList('bitacora:entries', bitacora);
-    if(!ok){ bitacora = backup; renderBitacora(); return; }
+    if(!ok){ bitacora = backup; renderBitacora(); showToast('No se pudo guardar la acción. Intenta de nuevo.', 'error'); return; }
     bitacora = await loadList('bitacora:entries');
     closeBForm(); renderBitacora();
+    showToast('Guardado exitosamente', 'success');
 });
 
 function editBitacora(id){
@@ -133,13 +134,19 @@ function editBitacora(id){
 }
 
 async function deleteBitacora(id){
-    if(!confirm('¿Eliminar esta acción?')) return;
+    const sure = await confirmDialog('¿Eliminar esta acción? Esta operación no se puede deshacer.', {
+        title: 'Eliminar acción',
+        confirmText: 'Sí, eliminar',
+        cancelText: 'Cancelar'
+    });
+    if(!sure) return;
     const backup = bitacora.slice();
     bitacora = bitacora.filter(x=>x.id!==id);
     const ok = await saveList('bitacora:entries', bitacora);
-    if(!ok){ bitacora = backup; renderBitacora(); return; }
+    if(!ok){ bitacora = backup; renderBitacora(); showToast('No se pudo eliminar la acción. Intenta de nuevo.', 'error'); return; }
     bitacora = await loadList('bitacora:entries');
     renderBitacora();
+    showToast('Eliminado exitosamente', 'success');
 }
 
 function applyFilters() { currentPage = 1; renderBitacora(); }
