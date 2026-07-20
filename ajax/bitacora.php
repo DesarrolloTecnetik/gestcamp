@@ -1,7 +1,7 @@
 <?php
 
 	require '../init.conf';
-	//$CR->ajaxToken();
+	$CR->ajaxToken();
 	header('Content-Type: application/json; charset=utf-8');
 
 	$op = !empty($_GET['op']) ? $_GET['op'] : (!empty($_POST['op']) ? $_POST['op'] : 'list');
