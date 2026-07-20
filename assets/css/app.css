@@ -345,8 +345,9 @@
 
     .topbar{ padding:12px 16px; flex-wrap:wrap; row-gap:10px; }
     .topbar h2{ font-size:16px; }
+    .topbar .sub{ display:none; } /* en móvil no mostramos la fecha */
     .topbar-right{ margin-left:auto; }
-    .pill-btn span{ display:none; } /* deja solo el ícono "+" para ahorrar espacio */
+    .pill-btn span{ display:none; } /* deja solo el ícono para ahorrar espacio */
     .pill-btn{ padding:9px 12px; }
 
     .kpi-grid{ grid-template-columns:1fr 1fr; }

@@ -1,13 +1,7 @@
 <body>
 <div class="app">
 
-  <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="closeMobileSidebar()"></div>
-
   <aside class="sidebar" id="sidebar">
-    <button class="mobile-sidebar-close" id="mobile-sidebar-close" onclick="closeMobileSidebar()" title="Cerrar menú">
-      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"/></svg>
-    </button>
-
     <div class="brand">
       <img src="<?php echo URL; ?>/assets/images/logo.png" alt="Logotipo" class="brand-logo">
     </div>
@@ -70,9 +64,6 @@
   <div class="main">
     <div class="topbar">
       <div class="topbar-left">
-        <button class="mobile-menu-btn" id="mobile-menu-btn" onclick="toggleMobileSidebar()" title="Abrir menú">
-          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-        </button>
         <button class="back-btn" id="sidebar-toggle-btn" onclick="toggleSidebar()" title="Colapsar menú"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg></button>
         <div>
           <h2><?php echo $VIEWS[$activeView]['title']; ?></h2>
