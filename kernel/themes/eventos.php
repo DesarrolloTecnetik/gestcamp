@@ -106,9 +106,13 @@ document.getElementById('e-guardar').addEventListener('click', async ()=>{
         descripcion: document.getElementById('e-descripcion').value.trim()
     };
     const idx = eventos.findIndex(x=>x.id===id);
+    const backup = eventos.slice();
     if(idx>-1) eventos[idx]=entry; else eventos.push(entry);
-    await saveList('eventos:entries', eventos);
+    const ok = await saveList('eventos:entries', eventos);
+    if(!ok){ eventos = backup; renderEventos(); showToast('No se pudo guardar el evento. Intenta de nuevo.', 'error'); return; }
+    eventos = await loadList('eventos:entries');
     closeEForm(); renderEventos();
+    showToast('Guardado exitosamente', 'success');
 });
 
 function editEvento(id){
@@ -122,8 +126,19 @@ function editEvento(id){
 }
 
 async function deleteEvento(id){
-    if(!confirm('¿Eliminar este evento?')) return;
-    eventos = eventos.filter(x=>x.id!==id); await saveList('eventos:entries', eventos); renderEventos();
+    const sure = await confirmDialog('¿Eliminar este evento? Esta operación no se puede deshacer.', {
+        title: 'Eliminar evento',
+        confirmText: 'Sí, eliminar',
+        cancelText: 'Cancelar'
+    });
+    if(!sure) return;
+    const backup = eventos.slice();
+    eventos = eventos.filter(x=>x.id!==id);
+    const ok = await saveList('eventos:entries', eventos);
+    if(!ok){ eventos = backup; renderEventos(); showToast('No se pudo eliminar el evento. Intenta de nuevo.', 'error'); return; }
+    eventos = await loadList('eventos:entries');
+    renderEventos();
+    showToast('Eliminado exitosamente', 'success');
 }
 
 function applyFilters() { currentPage = 1; renderEventos(); }
