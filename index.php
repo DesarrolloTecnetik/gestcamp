@@ -19,7 +19,7 @@
 		'dashboard'    => array('title' => 'Panel general',                'cta' => null),
 		'bitacora'     => array('title' => 'Bitácora de acciones',         'cta' => 'Nueva acción',            'ctaFn' => 'openBForm()'),
 		'eventos'      => array('title' => 'Eventos',                      'cta' => 'Nuevo evento',            'ctaFn' => 'openEForm()'),
-		'mapa'         => array('title' => 'Mapa de calor',                'cta' => 'Regenerar simulación',    'ctaFn' => 'regenSim(); renderHeatmap();'),
+		'mapa'         => array('title' => 'Mapa de calor',                'cta' => null),
 		'brm'          => array('title' => 'BRM · Enrolamiento',           'cta' => null),
 		'estadisticas' => array('title' => 'Estadísticas',                 'cta' => null),
 		'candidatura'  => array('title' => 'Estadística de candidatura',   'cta' => null)
