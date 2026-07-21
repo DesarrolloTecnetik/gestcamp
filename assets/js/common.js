@@ -34,7 +34,7 @@ async function loadList(key) {
   const entity = STORAGE_ENTITY[key];
   if (!entity) return [];
   try {
-    const r = await fetch(`${window.APP_URL}/ajax/${entity}.php?op=list`, {
+    const r = await fetch(`/ajax/${entity}.php?op=list`, {
       headers: { 'X-Requested-With': 'XMLHttpRequest' }
     });
     const j = await r.json();
@@ -54,7 +54,7 @@ async function saveList(key, list) {
   const entity = STORAGE_ENTITY[key];
   if (!entity) return false;
   try {
-    const r = await fetch(`${window.APP_URL}/ajax/${entity}.php?op=sync`, {
+    const r = await fetch(`/ajax/${entity}.php?op=sync`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
       body: JSON.stringify({ list })
@@ -67,88 +67,6 @@ async function saveList(key, list) {
     return true;
   } catch (e) {
     console.error('saveList error', key, e);
-    return false;
-  }
-}
-
-/**
- * Crea un registro individual en la base de datos.
- * @param {string} key p.ej. 'bitacora:entries'
- * @param {Object} entry
- * @returns {Promise<string|null>} el id del registro creado, o null si falló
- */
-async function createItem(key, entry) {
-  const entity = STORAGE_ENTITY[key];
-  if (!entity) return null;
-  try {
-    const r = await fetch(`${window.APP_URL}/ajax/${entity}.php?op=create`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
-      body: JSON.stringify({ entry })
-    });
-    const j = await r.json();
-    if (!j || !j.ok) {
-      console.error('createItem error', key, j && j.error);
-      return null;
-    }
-    return j.id || entry.id;
-  } catch (e) {
-    console.error('createItem error', key, e);
-    return null;
-  }
-}
-
-/**
- * Actualiza un registro individual existente.
- * @param {string} key p.ej. 'bitacora:entries'
- * @param {string} id
- * @param {Object} entry
- * @returns {Promise<boolean>}
- */
-async function updateItem(key, id, entry) {
-  const entity = STORAGE_ENTITY[key];
-  if (!entity) return false;
-  try {
-    const r = await fetch(`${window.APP_URL}/ajax/${entity}.php?op=update`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
-      body: JSON.stringify({ id, entry })
-    });
-    const j = await r.json();
-    if (!j || !j.ok) {
-      console.error('updateItem error', key, j && j.error);
-      return false;
-    }
-    return true;
-  } catch (e) {
-    console.error('updateItem error', key, e);
-    return false;
-  }
-}
-
-/**
- * Elimina un registro individual.
- * @param {string} key p.ej. 'bitacora:entries'
- * @param {string} id
- * @returns {Promise<boolean>}
- */
-async function deleteItem(key, id) {
-  const entity = STORAGE_ENTITY[key];
-  if (!entity) return false;
-  try {
-    const r = await fetch(`${window.APP_URL}/ajax/${entity}.php?op=delete`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
-      body: JSON.stringify({ id })
-    });
-    const j = await r.json();
-    if (!j || !j.ok) {
-      console.error('deleteItem error', key, j && j.error);
-      return false;
-    }
-    return true;
-  } catch (e) {
-    console.error('deleteItem error', key, e);
     return false;
   }
 }
