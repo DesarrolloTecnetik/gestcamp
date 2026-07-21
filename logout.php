@@ -4,7 +4,7 @@
 
 	if( !empty($UserID) ) {
 
-		// borra la sesiÃ³n activa en login_temp
+		// borra la sesi¨®n activa en login_temp
 		$db->query("DELETE FROM login_temp WHERE userid = :account");
 		$db->bind(':account', $UserID);
 		$db->execute();
@@ -13,7 +13,7 @@
 		// marca al usuario como desconectado
 		$CR->updateData("login", "isonline", 0, "userid", $UserID);
 
-		// destruye la sesiÃ³n del kernel + la sesiÃ³n PHP
+		// destruye la sesi¨®n del kernel + la sesi¨®n PHP
 		if( isset($session) ) { $session->destroy($UserID); }
 		unset($_SESSION['id']);
 		unset($_SESSION['gologout']);
@@ -21,7 +21,7 @@
 
 	}
 
-	header('Location: '.URL.'/login.php');
+	header('Location: '.URL.'/login');
 	exit;
 
 ?>

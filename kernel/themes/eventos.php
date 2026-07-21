@@ -98,18 +98,20 @@ function clearEForm(){
 }
 
 document.getElementById('e-guardar').addEventListener('click', async ()=>{
-    const id = document.getElementById('e-id').value || uid();
+    const existingId = document.getElementById('e-id').value;
+    const id = existingId || uid();
     const entry = {
         id, tipo: document.getElementById('e-tipo').value, fecha: document.getElementById('e-fecha').value,
         lugar: document.getElementById('e-lugar').value.trim(), responsable: document.getElementById('e-responsable').value.trim(),
         participantes: Number(document.getElementById('e-participantes').value)||0, estatus: document.getElementById('e-estatus').value,
         descripcion: document.getElementById('e-descripcion').value.trim()
     };
-    const idx = eventos.findIndex(x=>x.id===id);
-    const backup = eventos.slice();
-    if(idx>-1) eventos[idx]=entry; else eventos.push(entry);
-    const ok = await saveList('eventos:entries', eventos);
-    if(!ok){ eventos = backup; renderEventos(); showToast('No se pudo guardar el evento. Intenta de nuevo.', 'error'); return; }
+
+    const ok = existingId
+        ? await updateItem('eventos:entries', existingId, entry)
+        : await createItem('eventos:entries', entry);
+
+    if(!ok){ showToast('No se pudo guardar el evento. Intenta de nuevo.', 'error'); return; }
     eventos = await loadList('eventos:entries');
     closeEForm(); renderEventos();
     showToast('Guardado exitosamente', 'success');
@@ -132,10 +134,8 @@ async function deleteEvento(id){
         cancelText: 'Cancelar'
     });
     if(!sure) return;
-    const backup = eventos.slice();
-    eventos = eventos.filter(x=>x.id!==id);
-    const ok = await saveList('eventos:entries', eventos);
-    if(!ok){ eventos = backup; renderEventos(); showToast('No se pudo eliminar el evento. Intenta de nuevo.', 'error'); return; }
+    const ok = await deleteItem('eventos:entries', id);
+    if(!ok){ showToast('No se pudo eliminar el evento. Intenta de nuevo.', 'error'); return; }
     eventos = await loadList('eventos:entries');
     renderEventos();
     showToast('Eliminado exitosamente', 'success');

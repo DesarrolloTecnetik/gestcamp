@@ -2,12 +2,12 @@
 	require 'init.conf';
 
 	#
-	# GATE DE SESIÓN -> si no hay usuario logueado, manda a /login.php
+	# GATE DE SESIÓN -> si no hay usuario logueado, manda a /login
 	# guarda la URL solicitada para regresar ahí después del login
 	#
 		if( empty($UserID) ) {
 			$_SESSION['gologout'] = URL.$_SERVER['REQUEST_URI'];
-			header('Location: '.URL.'/login.php');
+			header('Location: '.URL.'/login');
 			exit;
 		}
 

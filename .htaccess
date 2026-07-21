@@ -12,6 +12,9 @@ RewriteBase /
 
 	# --- DEFINICIÓN MANUAL DE RUTAS ---
 	
+	# Login
+    RewriteRule ^login$ login.php [L]
+	
 	# Panel Principal
 	RewriteRule ^inicio$ index.php [L]
 	
